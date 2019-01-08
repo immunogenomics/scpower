@@ -1,5 +1,5 @@
 #!/usr/bin/env/Rscript
-source("simulation.libs.R")
+source("/PHShome/cyf0/Projects/scpower/src/simulation.libs.R")
 
 require("optparse")
 
@@ -12,6 +12,8 @@ option_list = list(
                 help = "foldchange increase in cluster 2 proportion for cases", metavar = "numeric"),
   make_option(c("-o", "--out"), type = "character", default = getwd(), 
               help = "output directory [default = %default]", metavar = "character"),
+  make_option(c("--filename"), type = "character", default = "default",
+              help = "output filename [default = %default]", metavar = "character"),
   make_option(c("-v", "--verbose"), action = "store_true", default = TRUE,
               help = "Should the program print extra stuff out? [default %default]")
 )
@@ -20,9 +22,12 @@ opt_parser = OptionParser(option_list = option_list)
 opt = parse_args(opt_parser)
 
 # Create output filename
-filename <- paste("simulation_", opt$ncells, "cells_", opt$ndonors,
-                  "donors_", round(opt$foldchange, 2), "foldchange.rds", sep = "")
-
+if (opt$filename == "default") {
+  filename <- paste("simulation_", opt$ncells, "cells_", opt$ndonors,
+                    "donors_", round(opt$foldchange, 2), "foldchange.rds", sep = "")
+  } else { 
+  filename <- opt$filename
+}
 
 # Read back options to user if verbose
 if (opt$v) {

@@ -141,4 +141,3 @@ makeAMat <- function(type, subtype=NULL, cluster=NULL, delta_type = 0.01, delta_
   }
   return(as.matrix(A))
 }
-
