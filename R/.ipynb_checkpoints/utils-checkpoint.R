@@ -24,6 +24,15 @@ read10x <- function(run, suffix) {
 #     return(as(sumOverRowNames(data), "dgCMatrix"))
 }
 
+BuildSNNSeurat <- function (data.use, k.param = 30, prune.SNN = 1/15, nn.eps = 0) {
+    my.knn <- nn2(data = data.use, k = k.param, searchtype = "standard", eps = nn.eps)
+    nn.ranked <- my.knn$nn.idx
+    snn_res <- ComputeSNN(nn_ranked = nn.ranked, prune = prune.SNN)
+    rownames(snn_res) <- row.names(data.use)
+    colnames(snn_res) <- row.names(data.use)
+    return(snn_res)
+}
+environment(BuildSNNSeurat) <- asNamespace("Seurat")
 
 fig.size <- function (height, width) {
     options(repr.plot.height = height, repr.plot.width = width)
